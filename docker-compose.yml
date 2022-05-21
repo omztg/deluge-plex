@@ -1,0 +1,43 @@
+version: "2.1"
+services:
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - /path/to/deluge/config:/config
+      - /path/to/your/downloads:/downloads
+    ports:
+      - 8112:8112
+      - 6881:6881
+      - 6881:6881/udp
+    restart: always
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - /path/to/library:/config
+      - /path/to/your/downloads:/tv
+      - /path/to/movies:/movies
+    restart: unless-stopped
+    ports:
+        - 32400:32400
+        - 1900:1900/udp
+        - 3005:3005
+        - 5353:5353/udp
+        - 8324:8324
+        - 32410:32410/udp
+        - 32412:32412/udp
+        - 32413:32413/udp
+        - 32414:32414/udp
+        - 32469:32469
